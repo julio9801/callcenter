@@ -1,0 +1,35 @@
+<!--
+- @file reporteQueja.xhtml
+- 
+- @description Pagina para descarga de reporte de quejas
+- 
+- @dependencies
+-  └──  ReporteQuejaBean.queja (objeto)
+- 
+- @author Gerardo Blanco
+- @date 11/01/2019
+-->
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">CALLCENTER - REPORTE</ui:define>
+    <ui:define name="contentTitle">Descarga de Quejas</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />		
+            <p:panelGrid columns="2" id="paneldescarga">
+                <p:commandButton value="Descargar" ajax="false" icon="ui-icon-arrowthick-1-s">
+                    <p:fileDownload value="#{reporteQuejasBean.file}" />
+                </p:commandButton>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

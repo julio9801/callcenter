@@ -1,0 +1,69 @@
+<!DOCTYPE html [
+    <!ENTITY copy "&#169;"> 
+]>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+<ui:insert name="meta" />
+<h:head>
+	<title><ui:insert name="title">CALLCENTER</ui:insert></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <link rel="shortcut icon" href="../resources/images/favicon.ico" />
+	<!-- 	<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico?1" /> -->
+</h:head>
+<h:body>
+	<h:outputStylesheet name="css/layout.css" />
+	<h:outputScript library="js" name="util.js" target="body" />
+
+	<div id="header-wrapper">
+		<div id="header" class="wrapped">
+			<div class="navbar nav_title nav_logo_main" style="border: 0;">
+                            <img src="../resources/images/logo.png" id="logoHeader"></img>
+                        </div>
+                    
+			<p:separator />
+			<h:form>
+				<p:menubar model="#{menuBean.model}"
+					rendered="#{request.userPrincipal ne null}">
+					<f:facet name="options">
+						<h:outputText style="margin:20px 15px 0px 0px;"
+							value="#{sessionBean.nombreCompletoUsuario}" />
+					</f:facet>
+				</p:menubar>
+			</h:form>
+		</div>
+	</div>
+
+	<div id="content-wrapper">
+		<div class="wrapped ui-helper-clearfix">
+			<p:panel id="content" styleClass="wrapped">
+				<p:ajaxStatus onstart="PF('statusDialog').show()"
+					onsuccess="PF('statusDialog').hide()" />
+				<h2 id="contentTitle">
+					<ui:insert name="contentTitle">#{page.current.title}</ui:insert>
+				</h2>
+				<ui:insert name="content" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+					closable="false" resizable="false" showHeader="false">
+					<p:graphicImage library="images" name="ajax-loader.gif" />
+				</p:dialog>
+			</p:panel>
+		</div>
+	</div>
+
+	<div id="footer-wrapper">
+		<p:panel id="footer" styleClass="wrapped">
+			<h3>Copyright &copy; 2017</h3>
+			
+		</p:panel>
+	</div>
+
+</h:body>
+</html>

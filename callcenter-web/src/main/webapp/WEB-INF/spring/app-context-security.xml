@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns="http://www.springframework.org/schema/security" 
+             xmlns:p="http://www.springframework.org/schema/p"
+             xmlns:jee="http://www.springframework.org/schema/jee"
+             xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <http auto-config="true" use-expressions="true"
+              entry-point-ref="authenticationEntryPoint">
+
+        <form-login login-page="/pages/login.xhtml" />
+
+        <logout logout-url="/pages/logout.xhtml" logout-success-url="/pages/login.xhtml"
+                        invalidate-session="true" />
+               
+        <csrf disabled="true" />
+
+        <intercept-url pattern="/pages/home.xhtml"
+                               access="hasAnyRole('ROLE_ADMIN','ROLE_WEB_MASTER','ROLE_CALL_CENTER','ROLE_SUPERVISOR','ROLE_EJECUTOR','ROLE_INFRAESTRUCTURA')" />
+        <intercept-url pattern="/pages/usuarios/**"
+                               access="hasAnyRole('ROLE_ADMIN','ROLE_WEB_MASTER','ROLE_INFRAESTRUCTURA')" />
+        <intercept-url pattern="/pages/catalogos/**"
+                               access="hasAnyRole('ROLE_ADMIN','ROLE_WEB_MASTER')" />
+        <intercept-url pattern="/pages/quejas/**"
+                               access="hasAnyRole('ROLE_ADMIN','ROLE_WEB_MASTER','ROLE_CALL_CENTER','ROLE_SUPERVISOR','ROLE_EJECUTOR')" />
+         
+        <access-denied-handler error-page="/pages/acessDenied.xhtml" />
+      
+    </http>
+
+    <jee:local-slsb id="usuarioService"
+                        jndi-name="java:global/callcenter-web/ejb/usuarioService"
+                        business-interface="com.itaca.callcenter.services.UsuarioService" />
+
+    <beans:bean id="customUserDetailService"
+                    class="com.itaca.callcenter.spring.beans.CustomUserDetailsService">
+        <beans:property name="usuarioService" ref="usuarioService" />
+    </beans:bean>
+    <beans:bean id="authenticationEntryPoint"
+                    class="com.itaca.callcenter.spring.beans.JsfLoginUrlAuthenticationEntryPoint"
+                    p:redirectStrategy-ref="redirectStrategy">
+        <beans:constructor-arg value="/pages/login.xhtml" />
+    </beans:bean>
+
+    <beans:bean id="redirectStrategy"
+                    class="com.itaca.callcenter.spring.beans.JsfRedirectStrategy" />
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="customUserDetailsService">
+            <password-encoder hash="bcrypt" />
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="messageSource"
+                    class="org.springframework.context.support.ResourceBundleMessageSource">
+        <beans:property name="basenames">
+            <beans:list>
+                <beans:value>com.itaca.callcenter.resources.SpringMessages
+                </beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+</beans:beans>

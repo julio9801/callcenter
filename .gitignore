@@ -1,0 +1,13 @@
+# Compiled source code #
+**.class
+# Eclipse setting #
+.settings
+.project
+*.classpath
+
+# Maven target folder #
+target
+# IDEA #
+.idea
+*.iml
+

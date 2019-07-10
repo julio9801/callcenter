@@ -1,0 +1,147 @@
+<!--
+- @file listaUsuarios.xhtml
+- 
+- @description Pagina para la administracion de usuarios
+- 
+- @dependencies
+-  ├── usuarioBean.usuario (objeto)
+-  ├── usuarioBean.guardar (funcion)
+-  ├── usuarioBean.cancelar (funcion)
+-  ├── usuarioBean.lazyDataModel (class)
+-  └── usuarioBean.onSelect (funcion)
+-
+- @author Gerardo Blanco
+- @date 09/01/2019
+-->
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">
+        Itaca Factor - Usuarios
+    </ui:define>
+
+    <ui:define name="contentTitle">
+        Administración de usuarios
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:panel header="Usuario" id="panelUsuario">
+                <p:panelGrid columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="thirty-percent, seventy-percent">
+                    <p:outputLabel for="rol" value="Rol:" />
+
+                    <p:selectOneMenu id="rol" value="#{usuarioBean.rol}"
+                                     converter="omnifaces.SelectItemsConverter" required="true"
+                                     style="width: 50%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccionar--"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{usuarioBean.roles}" var="rol"
+                                       itemLabel="#{rol.nombre}" itemValue="#{rol}" />
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel for="nombre" value="Nombre:" />
+                    <p:inputText id="nombre" value="#{usuarioBean.usuario.nombres}"
+                                 maxlength="100" required="true" style="width: 50%" />
+                    <p:outputLabel for="apellidoPaterno" value="Apellido paterno:" />
+                    <p:inputText id="apellidoPaterno"
+                                 value="#{usuarioBean.usuario.apellidoPaterno}" maxlength="100"
+                                 required="true" style="width: 50%" />
+                    <p:outputLabel for="apellidoMaterno" value="Apellido materno:" />
+                    <p:inputText id="apellidoMaterno"
+                                 value="#{usuarioBean.usuario.apellidoMaterno}" maxlength="100"
+                                 required="true" style="width: 50%" />
+                    <p:outputLabel for="email" value="E-mail" />
+                    <p:inputText id="email" value="#{usuarioBean.usuario.email}"
+                                 maxlength="100" required="true" style="width: 50%"
+                                 styleClass="normalText">
+                        <f:validator validatorId="emailValidator" />
+                    </p:inputText>
+                    <p:outputLabel for="reg" value="Region:" />
+                    <p:selectOneMenu id="reg" required="true"  autoWidth="false" 
+                                     value="#{sucursalesBean.sucursal.idregion}"
+                                     converter="omnifaces.SelectItemsConverter" filter="true"
+                                     filterMatchMode="contains" >
+                        <f:selectItem itemValue="#{null}" itemLabel="--Seleccionar--" noSelectionOption="true" />
+                        <f:selectItems value="#{regionesBean.listRegiones}" var="region"
+                                       itemLabel="#{region.nombre}" itemValue="#{region}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="sucursal" value="*Sucursal:" />
+                    <p:selectOneMenu id="sucursal" 
+                                     value="#{cargaQuejasBean.queja.sucursal}"
+                                     converter="omnifaces.SelectItemsConverter" 
+                                     required="true" 
+                                     style="width: 50%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{sucursalBean.list}" 
+                                       var="sucursal"
+                                       itemLabel="#{sucursal.sucursal}" 
+                                       itemValue="#{sucursal}" /> 
+                    </p:selectOneMenu>  
+                    <p:outputLabel for="password" value="Contraseña:" />
+                    <p:password id="password" value="#{usuarioBean.usuario.password}"
+                                maxlength="100" required="#{usuarioBean.edicion==false}" match="password2"
+                                validatorMessage="Las contraseñas no coinciden."
+                                style="width: 50%" />
+                    <p:outputLabel for="password2" value="Confirme la contraseña:"
+                                   />
+                    <p:password id="password2" value="#{usuarioBean.usuario.password}"
+                                maxlength="100" required="#{usuarioBean.edicion==false}" 
+                                style="width: 50%" />
+
+
+                    <p:commandButton id="btnGuardar" value="Guardar"
+                                     process="panelUsuario" action="#{usuarioBean.guardar}"
+                                     update="@form" oncomplete="goToTop()" />
+                    <p:commandButton id="btnCancelar" value="Cancelar" process="@this"
+                                     action="#{usuarioBean.cancelar}" update="@form"
+                                     oncomplete="goToTop()" />
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="usuarios" var="usuario"
+                         value="#{usuarioBean.lazyDataModel}" selectionMode="single"
+                         selection="#{usuarioBean.usuario}" rowKey="#{usuario.id}" rows="10"
+                         paginator="true" emptyMessage="No existen usuarios registrados."
+                         sortBy="#{usuario.id}" lazy="true">
+                <f:facet name="header">Usuarios</f:facet>
+                <p:ajax event="rowSelect" listener="#{usuarioBean.onUsuarioSelect}"
+                        update=":form:panelUsuario,btnBorrar" />
+                <p:column headerText="Usuario" style="width: 20%">
+                    <h:outputText value="#{usuario.email}" />
+                </p:column>
+                <p:column headerText="Nombre(s)" style="width: 20%">
+                    <h:outputText value="#{usuario.nombres}" />
+                </p:column>
+                <p:column headerText="Apellido Paterno" style="width: 20%">
+                    <h:outputText value="#{usuario.apellidoPaterno}" />
+                </p:column>
+                <p:column headerText="Apellido Materno" style="width: 20%">
+                    <h:outputText value="#{usuario.apellidoMaterno}" />
+                </p:column>
+                <p:column headerText="Role" style="width: 20%">
+                    <h:outputText value="#{usuarioBean.printRol(usuario.roles)}" />
+                </p:column>
+                <f:facet name="footer">
+                    <p:spacer width="20" />
+                    <p:commandButton process="usuarios" id="btnBorrar"
+                                     action="#{usuarioBean.borrar}" update="@form"
+                                     icon="ui-icon-closethick" value="Borrar"
+                                     disabled="#{!usuarioBean.habilitarEliminacion}" />
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

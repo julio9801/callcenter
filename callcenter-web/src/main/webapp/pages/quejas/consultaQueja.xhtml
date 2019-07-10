@@ -1,0 +1,197 @@
+<!--
+- @file consultaQueja.xhtml
+- 
+- @description Pagina para el listado de quejas dentro de la base de datos. Se 
+-  redirige a pagina individual de quejas.
+- 
+- @dependencies
+-  ├── quejaBean.responder (funcion)
+-  ├── quejaBean.cerrar (funcion)
+-  ├── quejaBean.reasignarQueja (funcion)
+-  └──  QuejaBean.queja (objeto)
+- 
+- @author Gerardo Blanco
+- @date 09/01/2019
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title"> Callcenter - Quejas </ui:define>
+    <ui:define name="contentTitle">  Consulta de Quejas </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" /> 
+            <p:growl id="msgs" showDetail="true" />
+            <p:accordionPanel multiple="true">
+                <p:tab title="Queja">
+                    <p:outputLabel for="estatus" value="Estado de queja: " />
+                    <h:outputText id="estatus" class="estatus-control" value="#{quejaBean.queja.estatus}"/>
+                    <p:separator />
+                    <h3 style="margin-top:0">Grupo</h3>
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <p:outputLabel for="numero" value="Numero de Grupo:" />
+                        <h:outputText id="numero" value="#{quejaBean.queja.numero}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="grupo" value="Nombre de Grupo:" />
+                        <h:outputText id="grupo" value="#{quejaBean.queja.grupo}"/>
+
+                        <p:outputLabel for="sucursal" value="Sucursal:" />
+                        <h:outputText id="sucursal" value="#{quejaBean.queja.sucursal.sucursal}"/>
+                    </h:panelGrid>
+                    <p:separator />
+
+                    <h3 style="margin-top:0">Acreditado</h3>
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <p:outputLabel for="reportador" value="Tipo de Acreditado:" />
+                        <h:outputText id="reportador" value="#{quejaBean.queja.reportador.tipo}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="nomcli" value="Nombre de Acreditado:" />
+                        <h:outputText id="nomcli" value="#{quejaBean.queja.cliente}"/>
+
+                        <p:outputLabel for="fechaNac" value="Fecha de Nacimiento:" />
+                        <h:outputText id="fechaNac" value="#{quejaBean.queja.fechaNacimiento}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="telefono" value="Telefono:" />
+                        <h:outputText id="telefono" value="#{quejaBean.queja.telefono}"/>
+                    </h:panelGrid>
+                    <p:separator />
+
+                    <h3 style="margin-top:0">Reportado</h3>
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <p:outputLabel for="reportado" value="Nombre del Reportado:" />
+                        <h:outputText id="reportado" value="#{quejaBean.queja.reportado}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="puesto" value="Puesto:" />
+                        <h:outputText id="puesto" value="#{quejaBean.queja.puesto.puesto}"/>
+
+                        <p:outputLabel for="correo" value="Correo:" />
+                        <h:outputText id="correo" value="#{quejaBean.queja.correo.correo}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="area" value="Area:" />
+                        <h:outputText id="area" value="#{quejaBean.queja.correo.area.area}"/>
+                    </h:panelGrid>
+                    <p:separator />
+
+                    <h3 style="margin-top:0">Queja</h3>
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <p:outputLabel for="tipo" value="Tipo de queja:" />
+                        <h:outputText id="tipo" value="#{quejaBean.queja.causa.causa}"/>
+                        <h:outputText value="&#160;" />
+                        <p:outputLabel for="observaciones" value="Observaciones:" />
+                        <h:outputText id="observaciones" value="#{quejaBean.queja.observacion}"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="Acciones" class="tier-1">
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <h:commandButton value="#{quejaBean.textoBoton}" class="tier-0"  action="#{quejaBean.cerrar}" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+
+                        <p:outputLabel for="estatus" value="Responsable de queja: " />
+                        <h:outputText id="estatus" class="estatus-control" value="#{quejaBean.queja.usuario.nombres}+ ' ' +#{quejaBean.queja.usuario.apellidoPaterno}"/>
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+                        <h:outputText value="&#160;" />
+
+                        <p:outputLabel for="correoCambio" class="tier-1" value="Asignacion Nueva:" />
+                        <p:selectOneMenu id="correoCambio" class="tier-1" autoWidth="false" 
+                                         value="#{quejaBean.correoNuevo}"
+                                         converter="omnifaces.SelectItemsConverter" filter="true"
+                                         filterMatchMode="contains" >
+                            <f:selectItem itemValue="#{null}" itemLabel="--Seleccionar--" noSelectionOption="true" />
+                            <f:selectItems value="#{correoBean.list}" var="correo"
+                                           itemLabel="#{correo.correo}" itemValue="#{correo}" />
+                        </p:selectOneMenu>
+                        <h:outputText value="&#160;" />
+                        <h:commandButton id="cambiarAsignacion" class="tier-1" value="Reasignar" 
+                                         action="#{quejaBean.reasignarQueja}" ajax="false" /> 
+
+                        <p:button id="queja-btn" class="queja-btn control" outcome="/pages/quejas/altaDocumentos.xhtml" value="Continuar a carga de documentos" icon="ui-icon-pencil">
+                            <f:param name="quejaId" value="#{quejaBean.queja.id }" />
+                        </p:button>
+                        <h:outputText id="id-user" class="user-control control" value="#{quejaBean.role}"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="Realizar respuesta">
+                    <h:panelGrid columns="5" cellpadding="15">
+                        <p:outputLabel for="responde" value="*Quien responde:" />
+                        <p:inputText id="responde" value="#{quejaBean.respuesta.responde}"/>
+                        <p:outputLabel for="respuesta" value="*Respuesta:" />
+                        <p:inputTextarea id="respuesta" rows="10" cols="50" value="#{quejaBean.respuesta.respuesta}" />
+                        <h:commandButton value="Responder"  action="#{quejaBean.responder}" />
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab title="Respuestas">
+                    <!--<p:panelGrid styleClass="ui-panelgrid-blank" columnClasses="thirty-percent, seventy-percent">-->
+                    <p:dataTable id="listRespuestas" 
+                                 var="respuesta"
+                                 value="#{quejaBean.list}"
+                                 emptyMessage="Sin Respuestas">
+                        <f:facet name="header">Respuestas</f:facet>
+                        <!--Link a - accionInformacionIndividual.xhtml-->
+                        <!--                                <p:column  headerText="Editar" style="width: 5%" >
+                                                            <p:button outcome="/pages/acciones/accionEditarAdmin.xhtml"  icon="ui-icon-pencil">
+                                                                <f:param name="idAccion" value="#{accion.idAccion}" />
+                                                            </p:button>
+                                                        </p:column>-->
+                        <!--Tipo de Accion-->
+                        <p:column headerText="Id" style="width: 5%">
+                            <h:outputText value="#{respuesta.id}" />
+                        </p:column>
+                        <!--Estado-->
+                        <p:column headerText="Fecha" style="width: 10%">
+                            <h:outputText value="#{respuesta.fecha}" />
+                        </p:column>
+                        <!--Fecha-->
+                        <p:column   headerText="Respuesta" style="width: 50%">
+                            <h:outputText value="#{respuesta.respuesta}" />
+                        </p:column>
+                        <!--Fecha Perentoria-->
+                        <p:column   headerText="Responde" style="width: 20%">
+                            <h:outputText value="#{respuesta.responde}" />
+                        </p:column>
+                        <!--Lugar-->
+                        <p:column headerText="Usuario" style="width: 15%">
+                            <h:outputText value="#{respuesta.usuario.nombres}" />
+                        </p:column>
+                    </p:dataTable>
+                    <!--</p:panelGrid>-->
+                </p:tab>
+
+
+                <p:tab title="Documentos">
+                    <p:dataTable id="listDocumentos" 
+                                 var="documento"
+                                 value="#{quejaBean.listDocumentos}"
+                                 emptyMessage="Sin Documentos">
+                        <f:facet name="header">Documentos</f:facet>
+                        <!--Link a - accionInformacionIndividual.xhtml-->
+                        <p:column  headerText="Descargar" style="width: 5%" >
+                            <p:button outcome="/pages/quejas/consultaDocumento.xhtml"  icon="ui-icon-pencil">
+                                <f:param name="idDocumento" value="#{documento.nombre}" />
+                            </p:button>
+                        </p:column>
+                        <!--Tipo de Accion-->
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{documento.nombre}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+            </p:accordionPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

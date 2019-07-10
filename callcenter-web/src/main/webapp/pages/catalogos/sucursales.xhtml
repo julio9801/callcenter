@@ -1,0 +1,84 @@
+<!--
+- @file sucursales.xhtml
+- 
+- @description Pagina para la administracion del catalogo de sucursales
+- 
+- @dependencies
+-  ├── sucursalBean.sucursal (objeto)
+-  ├── sucursalBean.guardar (funcion)
+-  ├── sucursalBean.cancelar (funcion)
+-  ├── sucursalBean.lazyDataModel (class)
+-  └── sucursalBean.onSelect (funcion)
+-
+- @author Gerardo Blanco
+- @date 23/12/2018
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui">
+    
+    <ui:define name="title">CALLCENTER - SUCURSALES</ui:define> 
+    <ui:define name="contentTitle">Control de Sucursales</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:panel header="Alta" id="panelAlta">
+                <p:panelGrid columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="thirty-percent, seventy-percent">
+         
+                    <p:outputLabel for="cargo" value="Sucursal:" />
+                    <p:inputText id="cargo" value="#{sucursalBean.sucursal.sucursal}" maxlength="100" required="true" style="width: 50%" />
+                    
+                    <p:outputLabel for="reg" value="Region:" />
+                    <p:selectOneMenu id="reg" required="true"  autoWidth="false" 
+                                     value="#{sucursalesBean.sucursal.idregion}"
+                                     converter="omnifaces.SelectItemsConverter" filter="true"
+                                     filterMatchMode="contains" >
+                        <f:selectItem itemValue="#{null}" itemLabel="--Seleccionar--" noSelectionOption="true" />
+                        <f:selectItems value="#{regionesBean.listRegiones}" var="region"
+                                       itemLabel="#{region.nombre}" itemValue="#{region}" />
+                    </p:selectOneMenu>
+                    
+                    <p:commandButton id="btnGuardar" value="Guardar"
+                                     process="panelAlta" action="#{sucursalBean.guardar}"
+                                     update="@form"/>
+                    
+                    <p:commandButton id="btnCancelar" value="Cancelar" process="@this"
+                                     action="#{sucursalBean.cancelar}" update="@form" />
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="sucursales" var="sucursal"
+                         value="#{sucursalBean.lazyDataModel}" selectionMode="single"
+                         selection="#{sucursalBean.sucursal}" rowKey="#{sucursal.id}" rows="10"
+                         paginator="true" emptyMessage="No existen sucursales registrados."
+                         sortBy="#{sucursal.id}" lazy="true">
+                
+                <f:facet name="header">Sucursales</f:facet>
+                
+                <p:ajax event="rowSelect" listener="#{sucursalBean.onSelect}" update=":form:panelAlta" />
+                
+                <p:column headerText="Id" style="width: 20%">
+                    <h:outputText value="#{sucursal.id}" />
+                </p:column>
+                
+                <p:column headerText="Sucursal" style="width: 20%">
+                    <h:outputText value="#{sucursal.sucursal}" />
+                </p:column>
+                
+                <p:column headerText="Region" style="width: 20%">
+                    <h:outputText value="#{sucursal.region.nombre}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,28 @@
+<!--
+- @file consultaDocumento.xhtml
+- 
+- @description Pagina para la alta de documentos para quejas
+- 
+- @dependencies
+-  ├── documentoBean.documento (Object)
+-  └── documentoBean.downloadFile (funcion)
+-
+- @author Gerardo Blanco
+- @date 15/01/2019
+-->
+<ui:composition template="/WEB-INF/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">CALLCENTER - DOCUMENTOS</ui:define>
+    <ui:define name="contentTitle">Descarga de documentos</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <h:outputText id="estatus" class="estatus-control" value="#{documentoBean.documento}"/>
+            <h:form>
+                <br/>
+                <h:commandButton id="button" value="Descarga" action="#{documentoBean.downloadFile}"/>
+            </h:form> 
+        </h:form>
+    </ui:define>
+</ui:composition>

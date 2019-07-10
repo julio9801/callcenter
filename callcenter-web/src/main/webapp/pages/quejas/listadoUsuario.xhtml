@@ -1,0 +1,61 @@
+<!--
+- @file listadoGeneral.xhtml
+- 
+- @description Pagina para el listado de quejas dentro de la base de datos. Se 
+-  redirige a pagina individual de quejas.
+- 
+- @dependencies
+-  └──  listadoQuejasBean.quejas (Lista<objeto>)
+- 
+- @author Gerardo Blanco
+- @date 23/12/2018
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+                    
+    <ui:define name="title">CALLCENTER - Quejas</ui:define>
+    <ui:define name="contentTitle">Consulta general de Quejas</ui:define>
+        
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:dataTable id="quejas" var="queja"
+                         value="#{listadoQuejasBean.list}" 
+                         rowKey="#{queja.id}"  paginator="true" rows="10"
+                         emptyMessage="No existen quejas registradas."
+                         >
+                <f:facet name="header">Quejas</f:facet>
+                <p:column  headerText="Ver mas" style="width: 5%" >
+                    <p:button outcome="/pages/quejas/consultaQueja.xhtml"  icon="ui-icon-pencil">
+                        <f:param name="id" value="#{queja.id}" />
+                    </p:button>
+                </p:column>
+                    
+                <p:column filterBy="#{queja.id}" headerText="Id" style="width: 15%">
+                    <h:outputText value="#{queja.id}" />
+                </p:column>
+                
+                <p:column filterBy="#{queja.estatus}" headerText="Estado" style="width: 20%">
+                    <h:outputText value="#{queja.estatus}" />
+                </p:column>
+                
+                <p:column  filterBy="#{queja.cliente}" headerText="Cliente" style="width: 20%">
+                    <h:outputText value="#{queja.cliente}" />
+                </p:column>
+                    
+                <p:column filterBy="#{queja.grupo}" headerText="Nombre del grupo" style="width: 20%">
+                    <h:outputText value="#{queja.grupo}" />
+                </p:column>
+                
+                <p:column filterBy="#{queja.numero}" headerText="Numero del grupo" style="width: 20%">
+                    <h:outputText value="#{queja.numero}" />
+                </p:column> 
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

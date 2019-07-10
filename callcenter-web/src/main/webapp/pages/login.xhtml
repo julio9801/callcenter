@@ -1,0 +1,50 @@
+<ui:composition template="/WEB-INF/templates/log.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<!--	<ui:define name="title">
+        Cobleg Login
+    </ui:define>-->
+<ui:define name="content">
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <p:messages />
+                <p:focus context="loginForm" />
+                <h:form id="loginForm">
+                  <h1>Inicio de Session</h1>
+                  <div>
+                    <!-- <input type="text" class="form-control" placeholder="Ususario" required="" /> -->
+<!--                    <p:outputLabel for="username" value="Usuario:" />-->
+                    <p:inputText id="username" required="true"
+                        value="#{loginBean.username}" maxlength="50"
+                        styleClass="normalText form-control" placeholder="Usuario" />
+                  </div>
+                  <div>
+                    <!-- <input type="password" class="form-control" placeholder="Password" required="" /> -->
+<!--                    <p:outputLabel for="password" value="Contraseña:" />-->
+                    <p:password id="password" value="#{loginBean.password}"
+                        maxlength="50" required="true" styleClass="form-control" placeholder="Contraseña"/>
+                  </div>
+                  <div>
+                    <!-- <a class="btn btn-default submit" href="index.html">Entrar</a> -->
+                    <p:commandButton value="Ingresar" action="#{loginBean.login}" ajax="false" 
+                        class="btn btn-default submit"/>
+                  </div>
+                  <div class="clearfix"></div>
+<div>
+                            <img src="../resources/images/logo.svg" class="login_logo"></img>
+                        </div>
+                </h:form>
+        </section>
+  </div>
+</div>	
+
+    </ui:define>
+</ui:composition>

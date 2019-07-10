@@ -1,0 +1,87 @@
+<!--
+- @file causas.xhtml
+- 
+- @description Pagina para la administracion del catalogo de causas
+- 
+- @dependencies
+-  ├── causaBean.causa (objeto)
+-  ├── causaBean.guardar (funcion)
+-  ├── causaBean.cancelar (funcion)
+-  ├── causaBean.lazyDataModel (class)
+-  └── causaBean.onSelect (funcion)
+-
+- @author Gerardo Blanco
+- @date 09/01/2019
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui">
+    
+    <ui:define name="title">CALLCENTER - CAUSAS</ui:define> 
+    <ui:define name="contentTitle">Control de Causas</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:panel header="Alta" id="panelAlta">
+                <p:panelGrid columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="thirty-percent, seventy-percent">
+         
+                    <p:outputLabel for="cargo" value="Causa:" />
+                    <p:inputText id="cargo" value="#{causaBean.causa.causa}" maxlength="100" required="true" style="width: 50%" />
+                    
+                    <p:outputLabel for="numero" value="Numero:" />
+                    <p:inputText id="numero" value="#{causaBean.causa.numero}" required="true" style="width: 50%" />
+                    
+                    <p:outputLabel for="tipo" value="*Tipo de queja:" />
+                    <p:selectOneMenu id="tipo" 
+                                     value="#{causaBean.causa.tipo}"
+                                     converter="omnifaces.SelectItemsConverter" 
+                                     required="true" 
+                                     style="width: 50%">
+                        <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{tipoBean.list}" 
+                                       var="tipo"
+                                       itemLabel="#{tipo.tipo}" 
+                                       itemValue="#{tipo}" /> 
+                    </p:selectOneMenu>
+                    
+                    <p:commandButton id="btnGuardar" value="Guardar"
+                                     process="panelAlta" action="#{causaBean.guardar}"
+                                     update="@form"/>
+                    
+                    <p:commandButton id="btnCancelar" value="Cancelar" process="@this"
+                                     action="#{causaBean.cancelar}" update="@form" />
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="causas" var="causa"
+                         value="#{causaBean.lazyDataModel}" selectionMode="single"
+                         selection="#{causaBean.causa}" rowKey="#{causa.id}" rows="10"
+                         paginator="true" emptyMessage="No existen causas registrados."
+                         sortBy="#{causa.id}" lazy="true">
+                
+                <f:facet name="header">Causas</f:facet>
+                
+                <p:ajax event="rowSelect" listener="#{causaBean.onSelect}" update=":form:panelAlta" />
+                
+                <p:column headerText="Id" style="width: 20%">
+                    <h:outputText value="#{causa.id}" />
+                </p:column>
+                
+                <p:column headerText="Causa" style="width: 20%">
+                    <h:outputText value="#{causa.causa}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

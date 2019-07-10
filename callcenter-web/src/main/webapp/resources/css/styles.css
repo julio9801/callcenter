@@ -1,0 +1,144 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20/07/2017, 04:45:15 AM
+    Author     : Operacion
+*/
+
+.login_content form input[type="text"]:focus, .login_content form input[type="email"]:focus, .login_content form input[type="password"]:focus {
+    -ms-box-shadow: 0 0 2px #63ca30 inset;
+    -o-box-shadow: 0 0 2px #63ca30 inset;
+    box-shadow: 0 0 2px #63ca30 inset;
+    background-color: #fff;
+    border: 1px solid #63ca30;
+    outline: none;
+}
+
+.login_content h1 {
+    font: normal 25px Helvetica, Arial, sans-serif;
+    letter-spacing: -0.05em;
+    line-height: 20px;
+    margin: 10px 0 30px;
+    color: #63ca30;
+}
+
+.login_logo {
+    vertical-align: middle;
+    width: 60%;
+    padding-top: 20%;
+}
+
+.ui-menu {
+    margin-bottom: 35px;
+}
+
+.ui-menubar {
+    background: transparent;
+    border: 0px;
+}
+
+#sidebar-menu ul {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin-top: 10px;
+    font-family: Roboto, Arial, "Droid Sans", sans-serif;
+}
+
+.ui-menuitem {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    width: 100% !important;
+}
+
+.ui-menuitem a {
+   width: 100%; 
+   color: #E7E7E7;
+   font-weight: 500 !important; 
+   margin-bottom: 6px;
+   position: relative;
+   display: block;
+   padding: 13px 15px 12px !important;
+}
+
+.ui-menuitem a:hover,
+.ui-menuitem a:focus {
+   text-decoration: none;
+    background: transparent;
+}
+
+.ui-menuitem-icon {
+     display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    width: 26px;
+    opacity: .99;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+     background-image: none !important;
+    text-indent: 0;
+    height: 0px;
+}
+
+.icon-null:before {
+   content: "\f015";
+}
+
+.ui-icon-triangle-1-s:before {
+     display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    width: 26px;
+    opacity: .99;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    float: right;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 10px;
+    min-width: inherit;
+    color: #C4CFDA;
+    content: "\f078";
+    
+    background-image: none !important;
+    text-indent: 0;
+    height: 0px;
+}
+
+.ui-state-hover,
+.ui-widget-content .ui-state-hover, 
+.ui-widget-header .ui-state-hover, 
+.ui-state-focus, 
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    border: 0px;
+    background:  none;
+}
+
+.ui-multiselectlistbox-listcontainer + .ui-multiselectlistbox-listcontainer {
+  width: 80%;
+}
+

@@ -1,0 +1,142 @@
+<!--
+- @file altaQueja.xhtml
+- 
+- @description Pagina para la carga de una queja de forma individual. Se logra
+-  utilizando una <form> y mandando todos los campos entrados a validar en un
+-  BEAN.
+- 
+- @dependencies
+-  ├── cargaQuejasBean.queja (objeto)
+-  ├── reportadorBean.list (Lista<objeto>)
+-  ├── puestoBean.list (Lista<objeto>)
+-  ├── sucursalBean.list (Lista<objeto>)
+-  ├── correoBean.list (Lista<objeto>)
+-  └── causaBean.list (Array[items])
+- 
+- @author Gerardo Blanco
+- @date 09/01/2019
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">CALLCENTER - QUEJAS</ui:define>
+    <ui:define name="contentTitle">Carga Individual de Quejas</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:panelGrid columns="1" id="panelCausas" class="causa-table">
+                <p:outputLabel for="tipo" value="Selecciona una Causa:" />
+                <p:selectOneMenu id="tipo" value="#{cargaQuejasBean.queja.causa}"
+                                 converter="omnifaces.SelectItemsConverter" required="true"
+                                 style="width: 50%">
+                    <f:selectItem itemValue="" itemLabel="--Seleccionar--"
+                                  noSelectionOption="true" />
+                    <f:selectItems value="#{cargaQuejasBean.list}" var="causa"
+                                   itemLabel="#{causa.causa}" itemValue="#{causa}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+
+            <p:panelGrid columns="2" id="panelQuejas">
+                <p:fieldset legend="Grupo" toggleable="false" toggleSpeed="500">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="numero" value="Numero de Grupo:" />
+                        <p:inputText id="numero" type="number" value="#{cargaQuejasBean.queja.numero}"/>
+                        <p:outputLabel for="grupo" value="*Nombre de Grupo:" />
+                        <p:inputText id="grupo" pattern="[a-zA-Z0-9-]+" value="#{cargaQuejasBean.queja.grupo}" required="true" />
+                        <p:outputLabel for="sucursal" value="*Sucursal:" />
+                        <p:selectOneMenu id="sucursal" 
+                                         value="#{cargaQuejasBean.queja.sucursal}"
+                                         converter="omnifaces.SelectItemsConverter" 
+                                         required="true" 
+                                         style="width: 50%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{sucursalBean.list}" 
+                                           var="sucursal"
+                                           itemLabel="#{sucursal.sucursal}" 
+                                           itemValue="#{sucursal}" /> 
+                        </p:selectOneMenu>  
+                         <h:outputText value="&#160;" />
+                          <h:outputText value="&#160;" />
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Acreditado" toggleable="false" toggleSpeed="500">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="reportador" value="*Tipo de acreditado:" />
+                        <p:selectOneMenu id="reportador" 
+                                         value="#{cargaQuejasBean.queja.reportador}"
+                                         converter="omnifaces.SelectItemsConverter" 
+                                         required="true" 
+                                         style="width: 50%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{reportadorBean.list}" 
+                                           var="reportador"
+                                           itemLabel="#{reportador.tipo}" 
+                                           itemValue="#{reportador}" /> 
+                        </p:selectOneMenu>
+                        <p:outputLabel for="nombre" value="Nombre de Cliente:" />
+                        <p:inputText id="nombre" pattern="[a-zA-Z0-9-]+" value="#{cargaQuejasBean.queja.cliente}"/>
+                        <p:outputLabel for="fecha" value="Fecha de Nacimiento:" />                
+                        <p:calendar id="fecha" value="#{cargaQuejasBean.queja.fechaNacimiento}" showOn="button" />
+                        <p:outputLabel for="telefono" value="Telefono:" />
+                        <p:inputText id="telefono" type="number" value="#{cargaQuejasBean.queja.telefono}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Queja" toggleable="false" toggleSpeed="500">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="observaciones" value="*Observaciones:" />
+                        <p:inputTextarea id="observaciones" rows="10" cols="50" value="#{cargaQuejasBean.queja.observacion}"  required="true"  />
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Reportado" toggleable="false" toggleSpeed="500">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="reportado" value="Nombre del Reportado:" />
+                        <p:inputText id="reportado" pattern="[a-zA-Z0-9-]+" value="#{cargaQuejasBean.queja.reportado}" />
+                        <p:outputLabel for="puesto" value="Puesto:" />
+                        <p:selectOneMenu id="puesto" 
+                                         value="#{cargaQuejasBean.queja.puesto}"
+                                         converter="omnifaces.SelectItemsConverter"
+                                         style="width: 50%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{puestoBean.list}" 
+                                           var="puesto"
+                                           itemLabel="#{puesto.puesto}" 
+                                           itemValue="#{puesto}" /> 
+                        </p:selectOneMenu>     
+                        <p:outputLabel for="correo" value="*Correo asignado a:" />
+                        <p:selectOneMenu id="correo" 
+                                         value="#{cargaQuejasBean.queja.correo}"
+                                         converter="omnifaces.SelectItemsConverter" 
+                                         required="true" 
+                                         style="width: 50%">
+                            <f:selectItem itemValue="" itemLabel="--Seleccionar--" 
+                                          noSelectionOption="true" />
+                            <f:selectItems value="#{correoBean.list}" 
+                                           var="correo"
+                                           itemLabel="#{correo.correo}" 
+                                           itemValue="#{correo}" /> 
+                        </p:selectOneMenu>
+                         <h:outputText value="&#160;" />
+                          <!--<h:outputText value="&#160;" />-->
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:commandButton id="btnGuardar" value="Guardar" action="#{cargaQuejasBean.guardar}" process="panelQuejas,panelCausas" update="@form" oncomplete="goToTop()" />                
+            
+                <h:outputText id="id-queja" class="queja-control control" value="#{cargaQuejasBean.queja.id}"/>
+                <p:button id="queja-btn" class="queja-btn control" outcome="/pages/quejas/altaDocumentos.xhtml" value="Continuar a carga de documentos" icon="ui-icon-pencil">
+                    <f:param name="quejaId" value="#{cargaQuejasBean.queja.id }" />
+                </p:button>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+
+

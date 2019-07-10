@@ -1,0 +1,74 @@
+<!--
+- @file tipos.xhtml
+- 
+- @description Pagina para la administracion del catalogo de tipos
+- 
+- @dependencies
+-  ├── tipoBean.tipo (objeto)
+-  ├── tipoBean.guardar (funcion)
+-  ├── tipoBean.cancelar (funcion)
+-  ├── tipoBean.lazyDataModel (class)
+-  └── tipoBean.onSelect (funcion)
+-
+- @author Gerardo Blanco
+- @date 23/12/2018
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui">
+    
+    <ui:define name="title">CALLCENTER - TIPOS</ui:define> 
+    <ui:define name="contentTitle">Control de Tipos</ui:define>
+    
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <p:panel header="Alta" id="panelAlta">
+                <p:panelGrid columns="2" layout="grid"
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="thirty-percent, seventy-percent">
+         
+                    <p:outputLabel for="cargo" value="Tipo:" />
+                    <p:inputText id="cargo" value="#{tipoBean.tipo.tipo}" maxlength="100" required="true" style="width: 50%" />
+                    
+                    <p:outputLabel for="numero" value="Numero:" />
+                    <p:inputText id="numero" value="#{tipoBean.tipo.numero}" required="true" style="width: 50%" />
+                    
+                    
+                    <p:commandButton id="btnGuardar" value="Guardar"
+                                     process="panelAlta" action="#{tipoBean.guardar}"
+                                     update="@form"/>
+                    
+                    <p:commandButton id="btnCancelar" value="Cancelar" process="@this"
+                                     action="#{tipoBean.cancelar}" update="@form" />
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tipos" var="tipo"
+                         value="#{tipoBean.lazyDataModel}" selectionMode="single"
+                         selection="#{tipoBean.tipo}" rowKey="#{tipo.id}" rows="10"
+                         paginator="true" emptyMessage="No existen tipos registrados."
+                         sortBy="#{tipo.id}" lazy="true">
+                
+                <f:facet name="header">Tipos</f:facet>
+                
+                <p:ajax event="rowSelect" listener="#{tipoBean.onSelect}" update=":form:panelAlta" />
+                
+                <p:column headerText="Id" style="width: 20%">
+                    <h:outputText value="#{tipo.id}" />
+                </p:column>
+                
+                <p:column headerText="Tipo" style="width: 20%">
+                    <h:outputText value="#{tipo.tipo}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

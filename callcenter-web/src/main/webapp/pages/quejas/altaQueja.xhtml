@@ -1,0 +1,46 @@
+<!--
+- @file altaQueja.xhtml
+- 
+- @description Este es el primer paso para la carga de la queja. El usuario selecciona
+- un tipo/producto de queja el cual se envia a cargasQuejasBean.java
+- 
+- @dependencies
+-  ├── cargaQuejasBean.producto (Lista<objeto>)
+-  ├── tipoBean.list (Lista<objeto>)
+-  └── cargaQuejasBean.seleccionProducto (Función)
+- 
+- @author Gerardo Blanco
+- @date 26/12/2018 (ultima modificacion)
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:define name="title">CALLCENTER - QUEJAS</ui:define>
+    <ui:define name="contentTitle">Carga Individual de Quejas</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="mensajes" />
+            <h:panelGrid columns="5" cellpadding="15" id="panelQuejas">
+                
+            <p:outputLabel for="tipo" value="Selecciona un producto:" />
+            <p:selectOneMenu id="tipo" value="#{cargaQuejasBean.producto}"
+                             converter="omnifaces.SelectItemsConverter" required="true"
+                             style="width: 50%">
+                <f:selectItem itemValue="" itemLabel="--Seleccionar--"
+                              noSelectionOption="true" />
+                <f:selectItems value="#{tipoBean.list}" var="tipo"
+                               itemLabel="#{tipo.tipo}" itemValue="#{tipo.id}" />
+            </p:selectOneMenu>
+            <h:outputText value="&#160;" />
+            <h:outputText value="&#160;" />
+            <h:outputText value="&#160;" />
+            
+            <p:commandButton id="btnGuardar" value="Continuar" action="#{cargaQuejasBean.seleccionProducto}" process="panelQuejas" update="@form" oncomplete="goToTop()" />                
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+
+

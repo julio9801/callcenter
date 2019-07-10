@@ -1,0 +1,31 @@
+<!--
+- @file altaDocumentos.xhtml
+- 
+- @description Pagina para la alta de documentos para quejas
+- 
+- @dependencies
+-  ├── cargaDocumentosBean.queja.id (integer)
+-  └── cargaDocumentosBean.guardaArchivo (funcion)
+-
+- @author Gerardo Blanco
+- @date 15/01/2019
+-->
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:define name="title">CALLCENTER - QUEJAS</ui:define>
+    <ui:define name="contentTitle">Carga de documentos</ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <h:outputText id="id-user" class="user-control control" value="#{cargaDocumentosBean.queja.id}"/>
+            <p:messages id="mensajes" />
+            <h:panelGrid columns="5" cellpadding="15" id="panelQuejas">
+                <p:fileUpload cancelLabel="Cancelar" uploadLabel="Guardar Archivo"
+                              label="Seleccionar"
+                              fileUploadListener="#{cargaDocumentosBean.guardaArchivo}" mode="advanced"
+                              dragDropSupport="false" update="@form" sizeLimit="1000000"
+                              fileLimit="1"/>  
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
