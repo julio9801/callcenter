@@ -32,7 +32,7 @@
         <junit-version>4.12</junit-version>
         <log4j-version>2.5</log4j-version>
         <spring-version>4.2.4.RELEASE</spring-version>
-        <spring-security-version>4.0.3.RELEASE</spring-security-version>
+        <spring-security-version>5.3.3.RELEASE</spring-security-version>
         <omnifaces-version>1.12.1</omnifaces-version>
         <hibernate-version>4.3.5.Final</hibernate-version>
         <hibernate-jpa-version>2.0-cr-1</hibernate-jpa-version>
