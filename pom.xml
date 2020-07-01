@@ -30,7 +30,7 @@
         <start-theme-version>1.0.10</start-theme-version>
         <postgresql-jdbc-version>9.4.1207.jre7</postgresql-jdbc-version>
         <junit-version>4.12</junit-version>
-        <log4j-version>2.5</log4j-version>
+        <log4j-version>2.13.3</log4j-version>
         <spring-version>4.2.4.RELEASE</spring-version>
         <spring-security-version>4.0.3.RELEASE</spring-security-version>
         <omnifaces-version>1.12.1</omnifaces-version>
